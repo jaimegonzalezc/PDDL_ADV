@@ -6,11 +6,11 @@
 	fl1 fl2 -fastlift sl1 sl2 -slowlift)
 
 	(:init 
-		(lift-on-floor fl1 n1)
+		(lift-on-floor fl1 n2)
 		(lift-on-floor fl2 n4)
-		(lift-on-floor sl1 n2)
+		(lift-on-floor sl1 n5)
 		(lift-on-floor sl2 n1)
-		(person-on-floor p1 n5)
+		(person-on-floor p1 n4)
 		(person-on-floor p2 n2)
 		(people-on-lift fl1 n0)
 		(people-on-lift fl2 n0)
@@ -33,10 +33,11 @@
 		(= (slow-move-cost n4 n0) 8) (= (slow-move-cost n4 n1) 6) (= (slow-move-cost n4 n2) 4) (= (slow-move-cost n4 n3) 2) (= (slow-move-cost n4 n5) 2)
 		(= (slow-move-cost n5 n0) 10) (= (slow-move-cost n5 n1) 8) (= (slow-move-cost n5 n2) 6) (= (slow-move-cost n5 n3) 4) (= (slow-move-cost n5 n4) 2)
 		(= (fast-move-cost n0 n2) 1) (= (fast-move-cost n0 n4) 2) (= (fast-move-cost n2 n0) 1) (= (fast-move-cost n2 n4) 1) (= (fast-move-cost n4 n0) 2) (= (fast-move-cost n4 n2) 1) 
+		(= (total-cost) 0)
 	)
 	(:goal 
 	(and
-	(person-on-floor p1 n2)		
+	(person-on-floor p1 n5)		
 	(person-on-floor p2 n0)
 	)
 	)
