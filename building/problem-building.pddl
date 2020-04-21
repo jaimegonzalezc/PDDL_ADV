@@ -1,10 +1,44 @@
 (define (problem problem-building)
 	(:domain building)
-	(objects )
+	(:objects 
+	n0 n1 n2 n3 n4 n5 -number
+	p1 p2 -person
+	fl1 fl2 -fastlift sl1 sl2 -slowlift)
 
-
-
-
-
-
+	(:init 
+		(lift-on-floor fl1 n1)
+		(lift-on-floor fl2 n4)
+		(lift-on-floor sl1 n2)
+		(lift-on-floor sl2 n1)
+		(person-on-floor p1 n5)
+		(person-on-floor p2 n2)
+		(people-on-lift fl1 n0)
+		(people-on-lift fl2 n0)
+		(people-on-lift sl1 n0)
+		(people-on-lift sl2 n0)
+		(accessible sl1 n0) (accessible sl1 n1) (accessible sl1 n2) (accessible sl1 n3) (accessible sl1 n4) (accessible sl1 n5) 
+		(accessible sl2 n0) (accessible sl2 n1) (accessible sl2 n2) (accessible sl2 n3) (accessible sl2 n4) (accessible sl2 n5) 
+		(accessible fl1 n0) (accessible fl1 n2) (accessible sl1 n4) 
+		(accessible fl2 n0) (accessible fl2 n2) (accessible sl2 n4) 
+		(next n0 n1) (next n1 n2) (next n2 n3) (next n3 n4) (next n4 n5) 
+		(on n0 n1) (on n0 n2) (on n0 n3) (on n0 n4) (on n0 n5) 
+		(on n1 n2) (on n1 n3) (on n1 n4) (on n1 n5) 
+		(on n2 n3) (on n2 n4) (on n2 n5) 
+		(on n3 n4) (on n3 n5) 
+		(on n4 n5) 
+		(= (slow-move-cost n0 n1) 2) (= (slow-move-cost n0 n2) 4) (= (slow-move-cost n0 n3) 6) (= (slow-move-cost n0 n4) 8) (= (slow-move-cost n0 n5) 10)
+		(= (slow-move-cost n1 n0) 2) (= (slow-move-cost n1 n2) 2) (= (slow-move-cost n1 n3) 4) (= (slow-move-cost n1 n4) 6) (= (slow-move-cost n1 n5) 8)
+		(= (slow-move-cost n2 n0) 4) (= (slow-move-cost n2 n1) 2) (= (slow-move-cost n2 n3) 2) (= (slow-move-cost n2 n4) 4) (= (slow-move-cost n2 n5) 6)
+		(= (slow-move-cost n3 n0) 6) (= (slow-move-cost n3 n1) 4) (= (slow-move-cost n3 n2) 2) (= (slow-move-cost n3 n4) 2) (= (slow-move-cost n2 n5) 4)
+		(= (slow-move-cost n4 n0) 8) (= (slow-move-cost n4 n1) 6) (= (slow-move-cost n4 n2) 4) (= (slow-move-cost n4 n3) 2) (= (slow-move-cost n4 n5) 2)
+		(= (slow-move-cost n5 n0) 10) (= (slow-move-cost n5 n1) 8) (= (slow-move-cost n5 n2) 6) (= (slow-move-cost n5 n3) 4) (= (slow-move-cost n5 n4) 2)
+		(= (fast-move-cost n0 n2) 1) (= (fast-move-cost n0 n4) 2) (= (fast-move-cost n2 n0) 1) (= (fast-move-cost n2 n4) 1) (= (fast-move-cost n4 n0) 2) (= (fast-move-cost n4 n2) 1) 
+	)
+	(:goal 
+	(and
+	(person-on-floor p1 n2)		
+	(person-on-floor p2 n0)
+	)
+	)
+	(:metric minimize (total-cost))
 )
