@@ -130,3 +130,28 @@
 	:effect(at end (and
 			(image-sent ?p ?t ?x ?y)
 			(decrease (energy ?v) 1))))
+
+(:durative-action change-to-N0
+	:parameters(?v - Vehicle)
+	:duration(= ?duration 1)
+	:condition(at start(and
+			(not (N0-enabled ?v))
+			(> (energy ?v) 1)))
+	:effect(at end (and
+			(N0-enabled ?v)
+			(decrease (energy ?v) 1))))
+
+(:durative-action recharge
+	:parameters(?v - Vehicle)
+	:duration(= ?duration (* (- 10000 (energy ?v)) 2))
+	:condition(over all (in-base ?v))
+	:effect(at end (increase (energy ?v) (/ (* (- 10000 (energy ?v)) 2) 2))))
+
+(:durative-action change-to-N1
+	:parameters(?v - Vehicle)
+	:duration(= ?duration 1)
+	:condition(at start (and
+			(N0-enabled ?v)))
+	:effect(at end (and 
+			(not (N0-enabled ?v))
+			(decrease (energy ?v) 1)))))
