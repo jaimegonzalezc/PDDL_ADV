@@ -53,5 +53,17 @@
     )
 )
 
-
+(:durative-action move 
+    :parameters (?x ?y -place ?rover -rover)
+    :duration (= ?duration (/ (distance ?x ?y) (speed ?rover)))
+    :condition (and (over all (not (has_extended_solar_panels ?rover))) (over all (not (is_recharging? ?rover)))(over all(not (is_taking_pictures? ?rover)))(over all(not (is_drilling? ?rover)))(over all(not(is_communicating? ?rover)))
+    (over all(not (is_analizing? ?rover)))(at start(is_on ?rover ?x)) (at start(> (battery-level ?rover) (* (speed ?rover) (/ (distance ?x ?y) (speed ?rover))))))
+    :effect (and(at end(decrease (battery-level ?rover) (* (speed ?rover) (/ (distance ?x ?y) (speed ?rover))))) (at end(is_on ?rover ?y))(at end(not(is_moving? ?rover)))(at start (not (is_on ?rover ?x))) (at start (is_moving? ?rover)) (at end (increase (total_battery_used ?rover) 10)))
+    
 )
+
+
+
+
+               
+
