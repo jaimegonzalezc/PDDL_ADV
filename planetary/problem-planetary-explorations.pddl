@@ -1,15 +1,27 @@
 ﻿(define (problem problem-planetary-explorations)
-    (:domain rover-domain)
+    (:domain planetary-explorations)
     (:objects
-        r1 r2 - rover
-        x y - place
+        r1 - rover
+        x y z a - place
     )
     (:init
-        (= (battery-level r1) 100)
-        (is_on ?x -place)
-        (can_move ?x ?y -place)
-        
+        (= (battery-level r1) 20)
+        (is_on r1 x)
+	(=(total_battery_used r1) 0)
+	(= (distance x y) 5)
+(= (distance x z) 10)
+(= (distance x a) 15)
+(= (distance y x) 5)
+(= (distance y z) 5)
+(= (distance y a) 10)
+(= (distance z x) 10)
+(= (distance z y) 5)
+(= (distance z a) 5)
+(= (distance a x) 30)
+(= (distance a y) 20)
+(= (distance a z) 5)
+(= (speed r1) 1)
     )
-    (:goal (is_on ?y))
-        
-    )
+    (:goal (and(is_on r1 x)(has_drilled r1 x) (has_analized r1 a)(has_comunicated r1 x)(has_drilled r1 y)(has_analized r1 z)(has_taken_picture r1 a)))
+(:metric minimize (total_battery_used r1))
+)
