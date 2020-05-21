@@ -1,3 +1,11 @@
+;Para este ejercicio hemos elegido el siguiente contexto:
+;Se propone crear un dominio y problem que simulen un sistema de repartos desde un almacén con distintos vehículos,  
+; de cada vehículo dependen varios factores como la velocidad o la cantidad de cajas que pueden transportar a la vez.
+;Se deben repartir los paquetes a diferentes lugares, los cuales se encuentran a diferentes distancias.
+;Cada vehículo a su vez dispone de un determinado nivel de combustible.
+
+
+
 (define (domain ejercicio4)
 (:requirements :typing :strips :fluents :durative-actions )
 (:types vehicle place package worker gas_station)
