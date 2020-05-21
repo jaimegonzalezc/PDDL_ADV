@@ -3,28 +3,19 @@
     (:objects
         truck motorbike - vehicle
         warehouse a b c - place
-        p1 p2 p3 p4 - package
+        p1  - package
 
     )
     (:init
     (= (total_fuel_used truck) 0)
     (not_is_loading p1)
-    (not_is_loading p2)
-    (not_is_loading p3)
-    (not_is_loading p4)
     (not_is_recharging truck)
     (not_is_recharging motorbike)
     (= (total_fuel_used motorbike) 0)
     (package_on_place p1 warehouse)
-    (package_on_place p2 warehouse)
-    (package_on_place p3 warehouse)
-    (package_on_place p4 warehouse)
     (vehicle_on_place truck warehouse)
     (vehicle_on_place motorbike warehouse)
     (= (time_required p1) 3)
-    (= (time_required p2) 5)
-    (= (time_required p3) 1)
-    (= (time_required p4) 8)
     (= (space truck) 2)
     (= (space motorbike) 2) 
     (= (speed truck) 1)
@@ -48,11 +39,7 @@
     )
     (:goal (and 
 	(package_on_place p1 a)
-    (package_on_place p2 b)
-    (package_on_place p3 a)
-    (package_on_place p4 c)
 	))
-(:constraints () )
 
 (:metric minimize (+ (total_fuel_used truck) (total_fuel_used motorbike)))
 
