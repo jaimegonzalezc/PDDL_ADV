@@ -44,7 +44,7 @@
     (= (fuel_level truck) 40)
     (= (fuel_level motorbike) 20)
     (= (max_fuel_level truck) 40)
-    (= (max_fuel_level truck) 20)
+    (= (max_fuel_level motorbike) 20)
     )
     (:goal (and 
 	(package_on_place p1 a)
@@ -52,7 +52,6 @@
     (package_on_place p3 a)
     (package_on_place p4 c)
 	))
-(:constraints () )
 
 (:metric minimize (+ (total_fuel_used truck) (total_fuel_used motorbike)))
 

@@ -1,21 +1,13 @@
-;Para este ejercicio hemos elegido el siguiente contexto:
-;Se propone crear un dominio y problem que simulen un sistema de repartos desde un almacén con distintos vehículos,  
-; de cada vehículo dependen varios factores como la velocidad o la cantidad de cajas que pueden transportar a la vez.
-;Se deben repartir los paquetes a diferentes lugares, los cuales se encuentran a diferentes distancias.
-;Cada vehículo a su vez dispone de un determinado nivel de combustible.
-
-
 (define (domain ejercicio4)
 (:requirements :typing :strips :fluents :durative-actions )
-(:types vehicle place package worker)
+(:types vehicle place package worker gas_station)
 (:predicates 
 
-(package_on_place ?place -place)
-(vehicle_on_place ?place - place)
+(package_on_place ?package -package ?place -place)
+(vehicle_on_place ?vehicle -vehicle ?place - place)
 (is_loaded ?vehicle -vehicle ?package -package)
 (not_is_loading ?package -package)
-(is_recharging ?vehicle)
-
+(not_is_recharging ?vehicle)
 
 )
 
@@ -24,22 +16,25 @@
 (space ?vehicle - vehicle) ;Free space of the vehicle
 (speed ?vehicle -vehicle)
 (distance ?a ?b -place)
-(fuel-level ?vehicle - vehicle)
+(fuel_level ?vehicle - vehicle)
+;(distance ?a -place ?station - gas_station)
+(max_fuel_level ?vehicle -vehicle)
+(total_fuel_used ?vehicle)
 )
 
 (:durative-action load
     :parameters (?place - place ?package -package ?vehicle -vehicle)
     :duration (= ?duration (time_required ?package))
     :condition (and 
-        (at start (and (package_on_place ?place -place) (vehicle_on_place ?place -place) (not_is_loading ?package)
+        (at start (and  (not_is_loading ?package) (package_on_place ?package ?place)
         ))
-        (over all (and (> (space ?vehicle) 0)
+        (over all (and (> (space ?vehicle) 0) (vehicle_on_place ?vehicle ?place) 
         ))
     )
     :effect (and 
-        (at start (not( not_is_loading ?package - package))
+        (at start(and (not( not_is_loading ?package )) (not(package_on_place ?package ?place))
         ))
-        (at end (and (not_is_loading ?package -package) (is_loaded ?vehicle -vehicle ?package -package) (not (package_on_place ?place)) (decrease (space ?vehicle) 1)
+        (at end (and (not_is_loading ?package ) (is_loaded ?vehicle ?package ) (decrease (space ?vehicle) 1)
         ))
     )
 )
@@ -48,29 +43,45 @@
     :parameters (?place - place ?package -package ?vehicle -vehicle)
     :duration (= ?duration (time_required ?package))
     :condition (and 
-        (at start (and (is_loaded ?place -place ?vehicle -vehicle) (vehicle_on_place ?place -place) (not_is_loading ?package -package)
+        (at start (and (is_loaded ?vehicle  ?package ) (vehicle_on_place ?vehicle ?place  ) (not_is_loading ?package )
         ))
 
     )
     :effect (and 
-        (at start (not(not_is_loading ?package - package))
+        (at start (not(not_is_loading ?package ))
         )
-        (at end (and  (is_loading ?package -package) (not(is_loaded ?vehicle -vehicle))  (package_on_place ?place) (increase (space ?vehicle) 1)
+        (at end (and  (not_is_loading ?package ) (not(is_loaded ?vehicle ?package ))  (package_on_place ?package  ?place ) (increase (space ?vehicle) 1)
         ))
     )
 )
 
-(:durative-action move 
-    :parameters (?x ?y -place ?rover -rover)
-    :duration (= ?duration (/ (distance ?x ?y) (speed ?rover)))
-    :condition (and (over all (not (has_extended_solar_panels ?rover))) (over all (not (is_recharging? ?rover)))(over all(not (is_taking_pictures? ?rover)))(over all(not (is_drilling? ?rover)))(over all(not(is_communicating? ?rover)))
-    (over all(not (is_analizing? ?rover)))(at start(is_on ?rover ?x)) (at start(> (battery-level ?rover) (* (speed ?rover) (/ (distance ?x ?y) (speed ?rover))))))
-    :effect (and(at end(decrease (battery-level ?rover) (* (speed ?rover) (/ (distance ?x ?y) (speed ?rover))))) (at end(is_on ?rover ?y))(at end(not(is_moving? ?rover)))(at start (not (is_on ?rover ?x))) (at start (is_moving? ?rover)) (at end (increase (total_battery_used ?rover) 10)))
-    
+(:durative-action refuel
+    :parameters (?vehicle -vehicle)
+    :duration (= ?duration (- (max_fuel_level ?vehicle) (fuel_level ?vehicle)))
+    :condition (and 
+        (at start  (< (fuel_level ?vehicle) 10)
+        )
+
+    )
+    :effect (and 
+        (at start (not(not_is_recharging ?vehicle ))
+        )
+        (at end (and  (not_is_recharging ?vehicle ) (increase (fuel_level ?vehicle) (max_fuel_level ?vehicle))
+        ))
+    )
 )
 
+(:durative-action move
+    :parameters (?x ?y - place ?vehicle -vehicle)
+    :duration (= ?duration (/ (distance ?x ?y) (speed ?vehicle)))
+    :condition 
+        (at start  (and(vehicle_on_place ?vehicle ?x) (> (fuel_level ?vehicle) (/ (distance ?x ?y) (speed ?vehicle)))))
 
-
-
-               
-
+    :effect (and 
+        (at start (not(vehicle_on_place ?vehicle ?x ))
+        )
+        (at end (and  (vehicle_on_place ?vehicle ?y) (not(vehicle_on_place ?vehicle ?x )) (decrease (fuel_level ?vehicle) (* (distance ?x ?y) (speed ?vehicle))) (increase (total_fuel_used truck) (* (distance ?x ?y) (speed ?vehicle)))
+        ))
+    )
+)
+)
